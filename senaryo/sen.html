@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,59 +16,64 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body style="max-width: 1000px; margin: auto; padding: 20px;">
-    <form action="/action_page.php">
-      <div class="mb-3">
-        Name:
-        <input type="name" class="form-control" id="name" placeholder="First Name" />
-      </div>
-      <div class="mb-3">
-        Last Name:
-        <input type="surname" class="form-control" id="surname" placeholder="Last Name" />
-      </div>
-      Birth Date:
+  <body style="max-width: 1000px; margin: 10px auto; padding: 20px">
+    <form action="/action_page.php" class="was-validated" id="form" name="form">
       <div class="row">
         <div class="col">
-          <select class="form-select" id="days">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+          Name:
+          <input
+            class="form-control"
+            id="name"
+            placeholder="First Name"
+            required
+          />
         </div>
         <div class="col">
-          <select class="form-select" id="months">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-        </div>
-        <div class="col">
-          <select class="form-select" id="years">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
+          Last Name:
+          <input
+            class="form-control"
+            id="surname"
+            placeholder="Last Name"
+            required
+          />
         </div>
       </div>
+      <div class="row">
+        <div class="col">Birth Date:</div>
+        <div class="col">
+          <input type="date" id="birthday" name="birthday" />
+        </div>
+      </div>
+
       Sex:
       <div class="form-check">
-        <input type="radio" class="form-check-input" id="sexmale" value="male" name="sex">Male
+        <input
+          type="radio"
+          class="form-check-input"
+          id="sexmale"
+          value="male"
+        />Male
       </div>
       <div class="form-check">
-        <input type="radio" class="form-check-input" id="sexfem" value="female" name="sex">Female
+        <input
+          type="radio"
+          class="form-check-input"
+          id="sexfem"
+          value="female"
+        />Female
       </div>
       <div class="form-check">
-        <input type="radio" class="form-check-input" id="sexoth" value="other"  name="sex">Other
+        <input
+          checked
+          type="radio"
+          class="form-check-input"
+          id="sexoth"
+          value="other"
+        />Other
       </div>
 
       City:
-      <select class="form-select" id="city">
+      <select class="form-select" id="city" required>
         <option>İstanbul</option>
         <option>Ankara</option>
         <option>Antalya</option>
@@ -78,45 +83,132 @@
 
       <div class="row">
         <div class="col">
-            Prefered Languages:
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="eng" name="lang">Engish
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="tr" name="lang">Turkish
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="de" name="lang">Deutsch
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="othlang" name="lang">
-                <input type="text" placeholder="Other">
-            </div>
+          Prefered Language(s):
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="eng"
+              name="lang"
+            />Engish
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="tr"
+              name="lang"
+            />Turkish
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="de"
+              name="lang"
+            />Deutsch
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="othlang"
+              name="lang"
+            />
+            <input type="text" placeholder="Other" />
+          </div>
         </div>
         <div class="col">
-            Interests:
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="cod" name="int">Coding
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="daan" name="int">Data Analitics
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="grde" name="int">Graphic Design
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="othint" name="int">
-                <input type="text" placeholder="Other">
-            </div>
+          Interests:
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="cod"
+              name="int"
+            />Coding
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="daan"
+              name="int"
+            />Data Analitics
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="grde"
+              name="int"
+            />Graphic Design
+          </div>
+          <div class="form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="othint"
+              name="int"
+            />
+            <input type="text" placeholder="Other" />
+          </div>
         </div>
       </div>
       How Would You Rate Your Experience
-      <input type="range" class="form-range" id="exp" min="1" max="10">
-      
-      Things You Want To Add:
-      <textarea class="form-control" rows="5" id="com"></textarea>
+      <input type="range" class="form-range" id="exp" min="1" max="10" />
 
-      <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      Things You Want To Add:
+      <textarea
+        class="form-control"
+        rows="5"
+        id="com"
+        placeholder="Optional"
+      ></textarea>
+
+      <div class="form-check">
+        <label for="terms">
+          Agree to
+          <button
+            type="button"
+            class="btn btn-link p-0 pb-1"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
+          >
+            Terms and Condition</button
+          >(Required)
+        </label>
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="terms"
+          name="terms"
+          required
+        />
+
+        <div class="valid-feedback"></div>
+        <div class="invalid-feedback">Check this checkbox to continue.</div>
+      </div>
+
+      <div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              Terms and Conditions
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">aaaaaaaaaaaaaaaaaa</div>
+          </div>
+        </div>
+      </div>
+
+      <input class="form-control" type="file" id="cv" name="choosefile" />
+
+      <button type="submit" class="btn bg-info">Submit</button>
+    </form>
   </body>
 </html>
