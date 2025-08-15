@@ -17,29 +17,36 @@
     ></script>
   </head>
   <body style="max-width: 1000px; margin: 10px auto; padding: 20px">
-    <form action="/action_page.php" class="was-validated" id="form" name="form">
+    <form class="was-validated" id="form">
       <div class="row">
         <div class="col">
-          Name:
+          <label for="firstname" class="form-label">First Name</label>
           <input
+            type="text"
             class="form-control"
             id="name"
             placeholder="First Name"
+            name="firstname"
             required
           />
         </div>
         <div class="col">
-          Last Name:
+          <label for="lastname" class="form-label">Last Name</label>
           <input
+            type="text"
             class="form-control"
-            id="surname"
+            id="lastname"
             placeholder="Last Name"
+            name="lastname"
             required
           />
         </div>
       </div>
+
       <div class="row">
-        <div class="col">Birth Date:</div>
+        <div class="col">
+          <label for="birthday" class="form-label">Birth Date:</label>
+        </div>
         <div class="col">
           <input type="date" id="birthday" name="birthday" />
         </div>
@@ -51,7 +58,9 @@
           type="radio"
           class="form-check-input"
           id="sexmale"
-          value="male"
+          name="sex"
+          value="Male"
+          required
         />Male
       </div>
       <div class="form-check">
@@ -59,21 +68,23 @@
           type="radio"
           class="form-check-input"
           id="sexfem"
-          value="female"
+          name="sex"
+          value="Female"
         />Female
       </div>
       <div class="form-check">
         <input
-          checked
           type="radio"
           class="form-check-input"
           id="sexoth"
-          value="other"
+          name="sex"
+          value="Other"
         />Other
       </div>
 
-      City:
-      <select class="form-select" id="city" required>
+      <label for="city" class="form-label">City:</label>
+      <select class="form-select" id="city" name="city" required>
+        <option value="">Please select a city</option>
         <option>İstanbul</option>
         <option>Ankara</option>
         <option>Antalya</option>
@@ -90,6 +101,7 @@
               class="form-check-input"
               id="eng"
               name="lang"
+              value="Engish"
             />Engish
           </div>
           <div class="form-check">
@@ -98,6 +110,7 @@
               class="form-check-input"
               id="tr"
               name="lang"
+              value="Turkish"
             />Turkish
           </div>
           <div class="form-check">
@@ -106,26 +119,23 @@
               class="form-check-input"
               id="de"
               name="lang"
+              value="Deutsch"
             />Deutsch
           </div>
           <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="othlang"
-              name="lang"
-            />
-            <input type="text" placeholder="Other" />
+            <input type="checkbox" class="form-check-input" id="othlangcheck" />
+            <input type="text" placeholder="Other" id="othlang" name="lang" />
           </div>
         </div>
         <div class="col">
-          Interests:
+          Interest(s):
           <div class="form-check">
             <input
               type="checkbox"
               class="form-check-input"
               id="cod"
               name="int"
+              value="Coding"
             />Coding
           </div>
           <div class="form-check">
@@ -134,6 +144,7 @@
               class="form-check-input"
               id="daan"
               name="int"
+              value="Data Analitics"
             />Data Analitics
           </div>
           <div class="form-check">
@@ -142,27 +153,34 @@
               class="form-check-input"
               id="grde"
               name="int"
+              value="Graphic Design"
             />Graphic Design
           </div>
           <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="othint"
-              name="int"
-            />
-            <input type="text" placeholder="Other" />
+            <input type="checkbox" class="form-check-input" id="othintcheck" />
+            <input type="text" placeholder="Other" id="othint" name="int" />
           </div>
         </div>
       </div>
-      How Would You Rate Your Experience
-      <input type="range" class="form-range" id="exp" min="1" max="10" />
+      <label for="exp" class="form-label"
+        >How Would You Rate Your Experience</label
+      >
 
-      Things You Want To Add:
+      <input
+        type="range"
+        class="form-range"
+        id="exp"
+        name="exp"
+        min="1"
+        max="10"
+      />
+
+      <label for="com" class="form-label">Things You Want To Add:</label>
       <textarea
         class="form-control"
         rows="5"
         id="com"
+        name="com"
         placeholder="Optional"
       ></textarea>
 
@@ -175,8 +193,8 @@
             data-bs-toggle="modal"
             data-bs-target="#myModal"
           >
-            Terms and Condition</button
-          >(Required)
+            Terms and Conditions
+          </button>
         </label>
         <input
           class="form-check-input"
@@ -186,7 +204,7 @@
           required
         />
 
-        <div class="valid-feedback"></div>
+        <div class="valid-feedback">You can continue.</div>
         <div class="invalid-feedback">Check this checkbox to continue.</div>
       </div>
 
@@ -208,7 +226,133 @@
 
       <input class="form-control" type="file" id="cv" name="choosefile" />
 
-      <button type="submit" class="btn bg-info">Submit</button>
+      <button
+        type="button"
+        class="btn bg-primary"
+        onclick="getform()"
+        id="sub"
+        name="sub"
+      >
+        Save
+      </button>
+
+      <button
+        type="button"
+        class="btn bg-primary"
+        onclick="getinfo()"
+        data-bs-toggle="modal"
+        data-bs-target="#info"
+      >
+        Display
+      </button>
+
+      <div class="modal" id="info">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              Your Current Info
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <ul id="myList"></ul>
+              <button type="submit" class="btn bg-primary" id="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
+
+    <script>
+      function onload() {
+        var innerform = document.getElementsByTagName("input");
+        var jsn = localStorage.getItem("atab");
+        var oldform = JSON.parse(jsn);
+        var keys = Object.keys(oldform);
+        var vals = Object.values(oldform);
+        for (var i = 0; i < innerform.length; i++) {
+          for (var j = 0; j < keys.length; j++) {
+            if (innerform[i].name === keys[j]) {
+            }
+          }
+        }
+      }
+
+      const person = {
+        firstname: "",
+        lastname: "",
+        birthday: "",
+        sex: "",
+        city: "",
+        lang: "",
+        int: "",
+        exp: "",
+        com: "",
+      };
+
+      var keyArray = [
+        "First Name: ",
+        "Last Name: ",
+        "Birth Date:",
+        "Sex: ",
+        "City: ",
+        "Language(s): ",
+        "Interest(s): ",
+        "Experience: ",
+        "Comment: ",
+      ];
+
+      function getform() {
+        var form = document.getElementById("form");
+        var data = new FormData(form);
+        localStorage.setItem("oldform", data);
+        var atab = Object.create(person);
+        atab.firstname = data.get("firstname");
+        atab.lastname = data.get("lastname");
+        atab.birthday = data.get("birthday");
+        atab.sex = data.get("sex");
+        atab.city = data.get("city");
+        atab.lang = data.getAll("lang");
+        atab.int = data.getAll("int");
+        atab.exp = data.get("exp");
+        atab.com = data.get("com");
+        localStorage.setItem("atab", JSON.stringify(atab));
+        localStorage.setItem("doc", data.get("choosefile"));
+      }
+
+      function getinfo() {
+        var innerlist = document.getElementsByTagName("li");
+        var jsn = localStorage.getItem("atab");
+        var info = JSON.parse(jsn);
+        var i = 0;
+        var keys = Object.keys(info);
+        var vals = Object.values(info);
+        clearList();
+
+        for (i = 0; i < keys.length; i++) {
+          var li = innerlist[i];
+          li.append(vals[i]);
+        }
+      }
+
+      function clearList() {
+        var innerlist = document.getElementById("myList");
+
+        while (innerlist.firstChild) {
+          innerlist.removeChild(innerlist.firstChild);
+        }
+
+        for (var i = 0; i < keyArray.length; i++) {
+          var li = document.createElement("li");
+          li.append(keyArray[i]);
+          innerlist.appendChild(li);
+        }
+      }
+    </script>
   </body>
 </html>
