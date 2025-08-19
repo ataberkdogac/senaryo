@@ -17,7 +17,12 @@
     ></script>
   </head>
   <body style="max-width: 1000px; margin: 10px auto; padding: 20px">
-    <form class="was-validated" id="form">
+    <form
+      class="was-validated"
+      id="form"
+      onsubmit="createFunc(event)"
+      action="http://127.0.0.1:5500/senaryo/datalist.html"
+    >
       <div class="row">
         <div class="col">
           <label for="firstname" class="form-label">First Name</label>
@@ -71,15 +76,6 @@
           name="sex"
           value="Female"
         />Female
-      </div>
-      <div class="form-check">
-        <input
-          type="radio"
-          class="form-check-input"
-          id="sexoth"
-          name="sex"
-          value="Other"
-        />Other
       </div>
 
       <label for="city" class="form-label">City:</label>
@@ -229,129 +225,100 @@
       <button
         type="button"
         class="btn bg-primary"
-        onclick="getform()"
+        
         id="sub"
         name="sub"
       >
         Save
       </button>
 
-      <button
-        type="button"
-        class="btn bg-primary"
-        onclick="getinfo()"
-        data-bs-toggle="modal"
-        data-bs-target="#info"
-      >
-        Display
-      </button>
 
-      <div class="modal" id="info">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              Your Current Info
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <ul id="myList"></ul>
-              <button type="submit" class="btn bg-primary" id="submit">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button onclick="getform()" type="submit" class="btn bg-primary" id="submit">Submit</button>
     </form>
 
     <script>
-      function onload() {
-        var innerform = document.getElementsByTagName("input");
-        var jsn = localStorage.getItem("atab");
-        var oldform = JSON.parse(jsn);
-        var keys = Object.keys(oldform);
-        var vals = Object.values(oldform);
-        for (var i = 0; i < innerform.length; i++) {
-          for (var j = 0; j < keys.length; j++) {
-            if (innerform[i].name === keys[j]) {
-            }
-          }
-        }
-      }
-
       const person = {
         firstname: "",
         lastname: "",
         birthday: "",
         sex: "",
         city: "",
-        lang: "",
+        langs: {},
+        ints: {},
         int: "",
         exp: "",
         com: "",
+        id: "",
+      };
+      const langs = {
+        eng: 0,
+        tr: 0,
+        de: 0,
+        lanc: 0,
+        lan: "",
       };
 
-      var keyArray = [
-        "First Name: ",
-        "Last Name: ",
-        "Birth Date:",
-        "Sex: ",
-        "City: ",
-        "Language(s): ",
-        "Interest(s): ",
-        "Experience: ",
-        "Comment: ",
-      ];
+      const ints = {
+        cod: 0,
+        daan: 0,
+        grde: 0,
+        intc: 0,
+        int: "",
+      };
+
+      function createFunc(e) {
+        var form = document.getElementById("form");
+        var data = new FormData(form);
+
+        ///////
+      }
 
       function getform() {
         var form = document.getElementById("form");
         var data = new FormData(form);
-        localStorage.setItem("oldform", data);
         var atab = Object.create(person);
+        var uniqueId = new Date(Math.ceil(Math.random() * 1e13)).valueOf().toString(36);
         atab.firstname = data.get("firstname");
         atab.lastname = data.get("lastname");
-        atab.birthday = data.get("birthday");
+        atab.birthday = new Date(data.get("birthday"));
         atab.sex = data.get("sex");
         atab.city = data.get("city");
-        atab.lang = data.getAll("lang");
-        atab.int = data.getAll("int");
+        getLangs(atab);
+        getInts(atab);
         atab.exp = data.get("exp");
         atab.com = data.get("com");
-        localStorage.setItem("atab", JSON.stringify(atab));
+        atab.id = uniqueId;
+        
+        var nA = [atab];
+        console.log(nA);
+        
+        var oA = localStorage.getItem("storedArray");
+        var arr = nA.concat(JSON.parse(oA));
+        console.log(arr);
+        localStorage.setItem("storedArray", JSON.stringify(arr));
+
         localStorage.setItem("doc", data.get("choosefile"));
       }
 
-      function getinfo() {
-        var innerlist = document.getElementsByTagName("li");
-        var jsn = localStorage.getItem("atab");
-        var info = JSON.parse(jsn);
-        var i = 0;
-        var keys = Object.keys(info);
-        var vals = Object.values(info);
-        clearList();
+      function getLangs(atab) {
+        var lang = Object.create(langs);
+        lang.eng = document.getElementById("eng").checked;
+        lang.tr = document.getElementById("tr").checked;
+        lang.de = document.getElementById("de").checked;
+        lang.lanc = document.getElementById("othlangcheck").checked;
+        lang.lan = document.getElementById("othlang").value;
 
-        for (i = 0; i < keys.length; i++) {
-          var li = innerlist[i];
-          li.append(vals[i]);
-        }
+        atab.langs = lang;
       }
 
-      function clearList() {
-        var innerlist = document.getElementById("myList");
-
-        while (innerlist.firstChild) {
-          innerlist.removeChild(innerlist.firstChild);
-        }
-
-        for (var i = 0; i < keyArray.length; i++) {
-          var li = document.createElement("li");
-          li.append(keyArray[i]);
-          innerlist.appendChild(li);
-        }
+      function getInts(atab) {
+        var inter = Object.create(ints);
+        inter.cod = document.getElementById("cod").checked;
+        inter.daan = document.getElementById("daan").checked;
+        inter.grde = document.getElementById("grde").checked;
+        inter.intc = document.getElementById("othintcheck").checked;
+        inter.int = document.getElementById("othint").value;
+        atab.ints = inter;
       }
     </script>
   </body>
