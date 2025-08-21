@@ -38,9 +38,11 @@
       function getids() {
         var arr = localStorage.getItem("storedArray");
         var a = JSON.parse(arr);
-        console.log(a[0]);
-        for (var i = 0; i < a.length; i++) {
-          addRow(a[i]);
+        a = a.filter(Element => Element !== null);
+        
+        
+        for (var k = 0; k < a.length; k++) {
+          addRow(a[k]);
         }
       }
 
@@ -48,6 +50,7 @@
         var table = document.getElementById("myTable");
 
         var newrow = table.insertRow(-1);
+        newrow.setAttribute("id", person.id);
         var keys = Object.keys(person);
         var vals = Object.values(person);
         for (var i = 0; i < keys.length; i++) {
@@ -85,21 +88,29 @@
             newcell.append(txt.toString());
           } else if (keys[i] === "id") {
             var editb = document.createElement("button");
-            
-            editb.append("Edit")
+            editb.append("Edit");
+            editb.setAttribute("id", vals[i]);
+
             var closeb = document.createElement("button");
-            
-            closeb.append("X")
+            closeb.append("X");
+            closeb.setAttribute("id", vals[i]);
+
             var newcell = newrow.insertCell(-1);
             newcell.append(editb);
             newcell.append(closeb);
+            closeb.onclick = function () {
+              var cid = closeb.getAttribute("id");
+              cl(cid);
+            };
+
+            editb.onclick = function () {
+              var eid = editb.getAttribute("id");
+              ed(eid);
+            };
+
           } else if (keys[i] === "birthday") {
-            var date = new Date(person.birthday);
-            var y = date.getFullYear();
-            var m = date.getMonth();
-            var d = date.getDate();
             var newcell = newrow.insertCell(-1);
-            newcell.append(d + "-" + m + "-" + y);
+            newcell.append(person.birthday);
           } else {
             var newcell = newrow.insertCell(-1);
             var txt = vals[i];
@@ -108,13 +119,36 @@
         }
       }
 
-      function cl(id){
-
+      function cl(unid) {
+        var ind;
+        var arr = localStorage.getItem("storedArray");
+        var a = JSON.parse(arr);
+        for (var j = 0; j < a.length; j++) {
+          if (a[j].id === unid) {
+            ind = j;
+          }
+        }
+        a.splice(ind, 1);
+        localStorage.setItem("uniqueid", "null");
+        localStorage.setItem("arrpos", -1);
+        localStorage.setItem("storedArray", JSON.stringify(a));
+        var row = document.getElementById(unid);
+        row.remove();
       }
-      function ed(id){
 
+      function ed(unid) {
+        var ind;
+        var arr = localStorage.getItem("storedArray");
+        var a = JSON.parse(arr);
+        for (var j = 0; j < a.length; j++) {
+          if (a[j].id === unid) {
+            ind = j;
+          }
+        }
+        localStorage.setItem("uniqueid", unid);
+        localStorage.setItem("arrpos", ind);
+        location.href = 'http://127.0.0.1:5500/senaryo/sen.html';
       }
-
     </script>
   </body>
 </html>

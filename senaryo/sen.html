@@ -16,12 +16,12 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body style="max-width: 1000px; margin: 10px auto; padding: 20px">
+  <body style="max-width: 1000px; margin: 10px auto; padding: 20px" onload="reform()">
     <form
       class="was-validated"
       id="form"
-      onsubmit="createFunc(event)"
       action="http://127.0.0.1:5500/senaryo/datalist.html"
+      
     >
       <div class="row">
         <div class="col">
@@ -223,17 +223,13 @@
       <input class="form-control" type="file" id="cv" name="choosefile" />
 
       <button
-        type="button"
+        onclick="getform()"
+        type="submit"
         class="btn bg-primary"
-        
-        id="sub"
-        name="sub"
+        id="submit"
       >
-        Save
+        Submit
       </button>
-
-
-      <button onclick="getform()" type="submit" class="btn bg-primary" id="submit">Submit</button>
     </form>
 
     <script>
@@ -269,7 +265,11 @@
       function createFunc(e) {
         var form = document.getElementById("form");
         var data = new FormData(form);
-
+        document
+          .getElementById("submit")
+          .addEventListener("click", function (event) {
+            event.preventDefault();
+          });
         ///////
       }
 
@@ -277,10 +277,22 @@
         var form = document.getElementById("form");
         var data = new FormData(form);
         var atab = Object.create(person);
-        var uniqueId = new Date(Math.ceil(Math.random() * 1e13)).valueOf().toString(36);
+        var stoId = localStorage.getItem("uniqueid");
+        var uniqueId = 0;
+
+        var arp = localStorage.getItem("arrpos");
+        if (stoId === "null") {
+          uniqueId = new Date(Math.ceil(Math.random() * 1e13))
+            .valueOf()
+            .toString(36);
+        } else {
+          uniqueId = stoId;
+          localStorage.setItem("uniqueid", "null");
+        }
+
         atab.firstname = data.get("firstname");
         atab.lastname = data.get("lastname");
-        atab.birthday = new Date(data.get("birthday"));
+        atab.birthday = data.get("birthday");
         atab.sex = data.get("sex");
         atab.city = data.get("city");
         getLangs(atab);
@@ -288,16 +300,26 @@
         atab.exp = data.get("exp");
         atab.com = data.get("com");
         atab.id = uniqueId;
-        
-        var nA = [atab];
-        console.log(nA);
-        
-        var oA = localStorage.getItem("storedArray");
-        var arr = nA.concat(JSON.parse(oA));
-        console.log(arr);
-        localStorage.setItem("storedArray", JSON.stringify(arr));
 
-        localStorage.setItem("doc", data.get("choosefile"));
+        var nA = [atab];
+        var oS = localStorage.getItem("storedArray");
+        var oA = [];
+        oA = JSON.parse(oS);
+
+        if (arp == -1) {
+          var arr = nA.concat(oA);
+          arr = arr.filter((Element) => Element !== null);
+
+          localStorage.setItem("storedArray", JSON.stringify(arr));
+        } else {
+          console.log(arp);
+          oA[arp] = nA[0];
+          console.log(oA);
+          localStorage.setItem("arrpos", -1);
+          oA = oA.filter((Element) => Element !== null);
+
+          localStorage.setItem("storedArray", JSON.stringify(oA));
+        }
       }
 
       function getLangs(atab) {
@@ -319,6 +341,41 @@
         inter.intc = document.getElementById("othintcheck").checked;
         inter.int = document.getElementById("othint").value;
         atab.ints = inter;
+      }
+
+      function reform() {
+        var unid = localStorage.getItem("uniqeid");
+        var arp = localStorage.getItem("arrpos");
+        var oS = localStorage.getItem("storedArray");
+        var oA = JSON.parse(oS);
+        var person = oA[arp];
+        console.log(person);
+        if (unid === "null") {return};
+        document.getElementById("name").value = person.firstname;
+        document.getElementById("lastname").value = person.lastname;
+        
+        
+        document.getElementById("birthday").value = person.birthday;
+        document.getElementById("city").value = person.city;
+        if (person.sex === "Male")
+        {document.getElementById("sexmale").checked = true}
+        else { document.getElementById("sexfem").checked = true}
+        var lanar = person.langs;
+        var intar = person.ints;
+        document.getElementById("eng").checked = lanar.eng;
+        document.getElementById("tr").checked = lanar.tr;
+        document.getElementById("de").checked = lanar.de;
+        document.getElementById("othlangcheck").checked = lanar.lanc;
+        document.getElementById("othlang").value = lanar.lan;
+        document.getElementById("cod").checked = intar.cod;
+        document.getElementById("daan").checked = intar.daan;
+        document.getElementById("grde").checked = intar.grde;
+        document.getElementById("othintcheck").checked = intar.intc;
+        document.getElementById("othint").value = intar.int;
+        document.getElementById("exp").value = person.exp;
+        document.getElementById("com").value = person.com;
+       
+        
       }
     </script>
   </body>
