@@ -21,15 +21,15 @@
       <table class="table" id="myTable">
         <thead>
           <tr>
-            <th data-field="firstname">Name</th>
-            <th data-field="lastname">Lastname</th>
-            <th data-field="birthday">BirthDate</th>
-            <th data-field="sex">Sex</th>
-            <th data-field="city">City</th>
-            <th data-field="lang">Language(s)</th>
-            <th data-field="int">Interest(s)</th>
-            <th data-field="exp">Experience</th>
-            <th data-field="com">Comments</th>
+            <th>Name</th>
+            <th>Lastname</th>
+            <th>BirthDate</th>
+            <th>Sex</th>
+            <th>City</th>
+            <th>Language(s)</th>
+            <th>Interest(s)</th>
+            <th>Experience</th>
+            <th>Comments</th>
           </tr>
         </thead>
       </table>
@@ -129,7 +129,7 @@
           }
         }
         a.splice(ind, 1);
-        localStorage.setItem("uniqueid", "null");
+        localStorage.setItem("uniqueid", null);
         localStorage.setItem("arrpos", -1);
         localStorage.setItem("storedArray", JSON.stringify(a));
         var row = document.getElementById(unid);
@@ -149,6 +149,8 @@
         localStorage.setItem("arrpos", ind);
         location.href = 'http://127.0.0.1:5500/senaryo/sen.html';
       }
+
+      
     </script>
   </body>
 </html>

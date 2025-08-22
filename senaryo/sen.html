@@ -16,12 +16,15 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body style="max-width: 1000px; margin: 10px auto; padding: 20px" onload="reform()">
+  <body
+    style="max-width: 1000px; margin: 10px auto; padding: 20px"
+    onload="reform()"
+  >
     <form
       class="was-validated"
       id="form"
       action="http://127.0.0.1:5500/senaryo/datalist.html"
-      
+      onsubmit="getform()"
     >
       <div class="row">
         <div class="col">
@@ -222,14 +225,7 @@
 
       <input class="form-control" type="file" id="cv" name="choosefile" />
 
-      <button
-        onclick="getform()"
-        type="submit"
-        class="btn bg-primary"
-        id="submit"
-      >
-        Submit
-      </button>
+      <button type="submit" class="btn bg-primary" id="submit">Submit</button>
     </form>
 
     <script>
@@ -246,48 +242,22 @@
         com: "",
         id: "",
       };
-      const langs = {
-        eng: 0,
-        tr: 0,
-        de: 0,
-        lanc: 0,
-        lan: "",
-      };
-
-      const ints = {
-        cod: 0,
-        daan: 0,
-        grde: 0,
-        intc: 0,
-        int: "",
-      };
-
-      function createFunc(e) {
-        var form = document.getElementById("form");
-        var data = new FormData(form);
-        document
-          .getElementById("submit")
-          .addEventListener("click", function (event) {
-            event.preventDefault();
-          });
-        ///////
-      }
 
       function getform() {
         var form = document.getElementById("form");
         var data = new FormData(form);
         var atab = Object.create(person);
         var stoId = localStorage.getItem("uniqueid");
-        var uniqueId = 0;
+        var uniqueId = "";
 
-        var arp = localStorage.getItem("arrpos");
-        if (stoId === "null") {
+        var arp = JSON.parse(localStorage.getItem("arrpos"));
+        if (stoId === null || stoId === "null") {
           uniqueId = new Date(Math.ceil(Math.random() * 1e13))
             .valueOf()
             .toString(36);
         } else {
           uniqueId = stoId;
-          localStorage.setItem("uniqueid", "null");
+          localStorage.setItem("uniqueid", null);
         }
 
         atab.firstname = data.get("firstname");
@@ -306,7 +276,7 @@
         var oA = [];
         oA = JSON.parse(oS);
 
-        if (arp == -1) {
+        if (arp === -1 || arp === null) {
           var arr = nA.concat(oA);
           arr = arr.filter((Element) => Element !== null);
 
@@ -323,43 +293,50 @@
       }
 
       function getLangs(atab) {
-        var lang = Object.create(langs);
-        lang.eng = document.getElementById("eng").checked;
-        lang.tr = document.getElementById("tr").checked;
-        lang.de = document.getElementById("de").checked;
-        lang.lanc = document.getElementById("othlangcheck").checked;
-        lang.lan = document.getElementById("othlang").value;
+        var langs = {};
+        langs.eng = document.getElementById("eng").checked;
+        langs.tr = document.getElementById("tr").checked;
+        langs.de = document.getElementById("de").checked;
+        langs.lanc = document.getElementById("othlangcheck").checked;
+        langs.lan = document.getElementById("othlang").value;
 
-        atab.langs = lang;
+        atab.langs = langs;
       }
 
       function getInts(atab) {
-        var inter = Object.create(ints);
-        inter.cod = document.getElementById("cod").checked;
-        inter.daan = document.getElementById("daan").checked;
-        inter.grde = document.getElementById("grde").checked;
-        inter.intc = document.getElementById("othintcheck").checked;
-        inter.int = document.getElementById("othint").value;
-        atab.ints = inter;
+        var ints = {};
+        ints.cod = document.getElementById("cod").checked;
+        ints.daan = document.getElementById("daan").checked;
+        ints.grde = document.getElementById("grde").checked;
+        ints.intc = document.getElementById("othintcheck").checked;
+        ints.int = document.getElementById("othint").value;
+        atab.ints = ints;
       }
 
       function reform() {
-        var unid = localStorage.getItem("uniqeid");
+        var unid = localStorage.getItem("uniqueid");
+        var arp = JSON.parse(localStorage.getItem("arrpos"));
+
+        if (arp > -1 && arp != null) {
+        } else {
+          return;
+        }
+
         var arp = localStorage.getItem("arrpos");
         var oS = localStorage.getItem("storedArray");
         var oA = JSON.parse(oS);
         var person = oA[arp];
-        console.log(person);
-        if (unid === "null") {return};
+        
         document.getElementById("name").value = person.firstname;
         document.getElementById("lastname").value = person.lastname;
-        
-        
+
         document.getElementById("birthday").value = person.birthday;
         document.getElementById("city").value = person.city;
-        if (person.sex === "Male")
-        {document.getElementById("sexmale").checked = true}
-        else { document.getElementById("sexfem").checked = true}
+        if (person.sex === "Male") {
+          document.getElementById("sexmale").checked = true;
+        } else {
+          document.getElementById("sexfem").checked = true;
+        }
         var lanar = person.langs;
         var intar = person.ints;
         document.getElementById("eng").checked = lanar.eng;
@@ -374,8 +351,6 @@
         document.getElementById("othint").value = intar.int;
         document.getElementById("exp").value = person.exp;
         document.getElementById("com").value = person.com;
-       
-        
       }
     </script>
   </body>
