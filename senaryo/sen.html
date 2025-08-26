@@ -24,7 +24,7 @@
       class="was-validated"
       id="form"
       action="http://127.0.0.1:5500/senaryo/datalist.html"
-      onsubmit="getform()"
+      method="post"
     >
       <div class="row">
         <div class="col">
@@ -223,13 +223,30 @@
         </div>
       </div>
 
-      <input class="form-control" type="file" id="cv" name="choosefile" />
+      <input
+        class="form-control"
+        type="file"
+        id="img"
+        name="choosefile"
+        accept=".jpg , .jpeg"
+      />
+      <div>
+        <img id="preview" />
+      </div>
 
       <button type="submit" class="btn bg-primary" id="submit">Submit</button>
     </form>
 
     <script>
+      document
+        .getElementById("form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          getform();
+        });
+
       const person = {
+        photo: "",
         firstname: "",
         lastname: "",
         birthday: "",
@@ -242,6 +259,10 @@
         com: "",
         id: "",
       };
+
+      var base64 = "";
+      var img = document.getElementById("img");
+      img.addEventListener("change", getFile);
 
       function getform() {
         var form = document.getElementById("form");
@@ -260,6 +281,7 @@
           localStorage.setItem("uniqueid", null);
         }
 
+        atab.photo = base64;
         atab.firstname = data.get("firstname");
         atab.lastname = data.get("lastname");
         atab.birthday = data.get("birthday");
@@ -270,6 +292,7 @@
         atab.exp = data.get("exp");
         atab.com = data.get("com");
         atab.id = uniqueId;
+        console.log(atab);
 
         var nA = [atab];
         var oS = localStorage.getItem("storedArray");
@@ -282,14 +305,30 @@
 
           localStorage.setItem("storedArray", JSON.stringify(arr));
         } else {
-          console.log(arp);
           oA[arp] = nA[0];
-          console.log(oA);
+
           localStorage.setItem("arrpos", -1);
           oA = oA.filter((Element) => Element !== null);
 
           localStorage.setItem("storedArray", JSON.stringify(oA));
         }
+        location.href = "http://127.0.0.1:5500/senaryo/datalist.html";
+      }
+
+      function getFile() {
+        var pre = document.getElementById("preview");
+
+        var nimg = document.getElementById("img").files[0];
+        if (nimg == null) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.readAsDataURL(nimg);
+        reader.onloadend = function () {
+          base64 = reader.result;
+          pre.src = base64;
+          pre.style = "height:100px; width:100px; object-fit: cover;";
+        };
       }
 
       function getLangs(atab) {
@@ -326,7 +365,7 @@
         var oS = localStorage.getItem("storedArray");
         var oA = JSON.parse(oS);
         var person = oA[arp];
-        
+
         document.getElementById("name").value = person.firstname;
         document.getElementById("lastname").value = person.lastname;
 
@@ -351,6 +390,13 @@
         document.getElementById("othint").value = intar.int;
         document.getElementById("exp").value = person.exp;
         document.getElementById("com").value = person.com;
+        if (person.photo === "") {
+        } else {
+          document.getElementById("preview").src = person.photo;
+          document.getElementById("preview").style =
+            "height:100px; width:100px; object-fit: cover;";
+          base64 = person.photo;
+        }
       }
     </script>
   </body>
